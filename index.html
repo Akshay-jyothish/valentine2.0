@@ -163,59 +163,66 @@ function nextSlide() {
     if (slide >= slides.length) return;
 
     const data = slides[slide];
+
+    // Update text
     document.getElementById("title").innerText = data.title;
     document.getElementById("text").innerText = data.text;
 
+    const mainImage = document.getElementById("mainImage");
     const extra = document.getElementById("extraContent");
+    const buttons = document.getElementById("buttons");
+
     extra.innerHTML = "";
 
-    if (data.forever) {
-        document.getElementById("mainImage").style.display = "none";
-        document.getElementById("buttons").innerHTML =
-            "<button class='yes' onclick='nextSlide()'>YES FOREVER 💍❤️</button>";
+    // If normal slide with image
+    if (data.img) {
+        mainImage.style.display = "block";
+        mainImage.src = data.img;
+        buttons.innerHTML = `
+            <button class="yes" onclick="nextSlide()">YES 💕</button>
+            <button class="no" id="noBtn">NO 🙈</button>
+        `;
+        setupNoButton();
     }
+
+    // Forever slide (no image)
+    else if (data.forever) {
+        mainImage.style.display = "none";
+        buttons.innerHTML = `
+            <button class="yes" onclick="nextSlide()">YES FOREVER 💍❤️</button>
+        `;
+    }
+
+    // Final gallery slide
     else if (data.final) {
+        mainImage.style.display = "none";
+
         let galleryHTML = "<div class='gallery'>";
         data.gallery.forEach(img => {
             galleryHTML += `<img src="${img}">`;
         });
         galleryHTML += "</div>";
+
         extra.innerHTML = galleryHTML;
-        document.getElementById("buttons").innerHTML =
-            "<button class='yes'>LOVE YOU ❤️</button>";
-    }
-    else {
-        document.getElementById("mainImage").style.display = "block";
-        document.getElementById("mainImage").src = data.img;
+
+        buttons.innerHTML = `
+            <button class="yes">LOVE YOU ❤️</button>
+        `;
     }
 
     slide++;
 }
+function setupNoButton() {
+    const noBtn = document.getElementById("noBtn");
+    if (!noBtn) return;
 
-/* NO button runs away */
-const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", () => {
-    const x = Math.random() * 200 - 100;
-    const y = Math.random() * 80 - 40;
-    noBtn.style.transform = `translate(${x}px, ${y}px)`;
-});
-
-/* Heart rain */
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
-    heart.style.fontSize = (15 + Math.random() * 20) + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
+    noBtn.addEventListener("mouseover", () => {
+        const x = Math.random() * 200 - 100;
+        const y = Math.random() * 80 - 40;
+        noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
 }
-setInterval(createHeart, 300);
-</script>
 
-</body>
-</html>
 
 
 
