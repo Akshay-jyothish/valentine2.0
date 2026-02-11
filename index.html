@@ -216,21 +216,24 @@ function setupNoButton() {
     const noBtn = document.getElementById("noBtn");
     if (!noBtn) return;
 
-    function moveButton() {
-        const x = Math.random() * 200 - 100;
-        const y = Math.random() * 80 - 40;
-        noBtn.style.transform = `translate(${x}px, ${y}px)`;
-    }
+  function moveButton() {
+    const card = document.querySelector(".card");
+    const cardRect = card.getBoundingClientRect();
 
-    // Desktop
-    noBtn.addEventListener("mouseover", moveButton);
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
 
-    // Mobile
-    noBtn.addEventListener("touchstart", function(e) {
-        e.preventDefault();   // stop click
-        moveButton();
-    });
+    const maxX = cardRect.width - btnWidth - 20;
+    const maxY = cardRect.height - btnHeight - 20;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.position = "absolute";
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
 }
+
 
 
 
